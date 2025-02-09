@@ -133,3 +133,4 @@
 /Users/victoraponte/Desktop/Proyectos de Casa/MedicalConnected/obj/Debug/net8.0/MedicalConnected.pdb
 /Users/victoraponte/Desktop/Proyectos de Casa/MedicalConnected/obj/Debug/net8.0/MedicalConnected.genruntimeconfig.cache
 /Users/victoraponte/Desktop/Proyectos de Casa/MedicalConnected/obj/Debug/net8.0/ref/MedicalConnected.dll
+/Users/victoraponte/Desktop/Proyectos de Casa/MedicalConnected/obj/Debug/net8.0/MedicalConnected.sourcelink.json

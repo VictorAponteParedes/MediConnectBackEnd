@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MedicalConnected.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class DoctorSpecialtyController : ControllerBase
 {
 
@@ -17,7 +17,7 @@ public class DoctorSpecialtyController : ControllerBase
         this.doctorSpecialtyService = doctorSpecialtyService;
     }
 
-    [HttpPost("AddSpecialty")]
+    [HttpPost]
     public async Task<IActionResult> AssingSpecialtyToDoctor([FromBody] AssignSpecialtyDto dto)
     {
         try
@@ -38,5 +38,7 @@ public class DoctorSpecialtyController : ControllerBase
         var doctors = await doctorSpecialtyService.GetDoctorsWithSpecialtiesAsync();
         return Ok(doctors);
     }
+    
+    
     
 }

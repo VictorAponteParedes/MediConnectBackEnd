@@ -14,6 +14,7 @@ builder.Services.AddDbContext<MedicalDbContext>(options =>
 
 builder.Services.AddScoped<DoctorSpecialtyService>();
 builder.Services.AddScoped<CreateDoctorService>();
+builder.Services.AddScoped<SpecialtySercive>();
 
 builder.Services.AddControllers();
 
@@ -34,6 +35,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //Resuelve problema de warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
+app.UseHttpsRedirection();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
