@@ -1,3 +1,4 @@
+using MedicalConnected.Dto;
 using MedicalConnected.Models;
 using MedicalConnected.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ public class SpecialtyController : ControllerBase
         }
         await specialtySerive.CreateSpecialty(specialty);
         return specialty;
-        
+
     }
 
     [HttpGet]
@@ -41,12 +42,19 @@ public class SpecialtyController : ControllerBase
         return Ok(specialties);
     }
 
+    [HttpGet("with-doctors")]
+    public async Task<IActionResult> GetSpecialtiesWithDoctors()
+    {
+        var specialtiesWithDoctors = await specialtySerive.GetSpecialtiesWithDoctors();
+        return Ok(specialtiesWithDoctors);
+    }
+
 
     [HttpGet("{specialtyId}")]
     public async Task<IActionResult> GetSpecialty(int specialtyId)
     {
         var specialty = await specialtySerive.GetSpecialtyId(specialtyId);
-    
+
         if (specialty == null)
         {
             return NotFound(new { message = "Especialidad no encontrada" });
@@ -54,6 +62,4 @@ public class SpecialtyController : ControllerBase
 
         return Ok(specialty);
     }
-    
-    
 }

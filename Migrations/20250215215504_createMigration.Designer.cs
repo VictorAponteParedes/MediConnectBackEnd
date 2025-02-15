@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicalConnected.Migrations
 {
     [DbContext(typeof(MedicalDbContext))]
-    [Migration("20250209182453_CreateRelationDoctorsAndSpeciality")]
-    partial class CreateRelationDoctorsAndSpeciality
+    [Migration("20250215215504_createMigration")]
+    partial class createMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +37,7 @@ namespace MedicalConnected.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("Create_at")
+                    b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("DateOfBirth")
@@ -63,27 +63,56 @@ namespace MedicalConnected.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("Updated_at")
+                    b.Property<int?>("SpecialtyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SpecialtyId");
+
                     b.ToTable("Doctors");
                 });
 
-            modelBuilder.Entity("MedicalConnected.Models.DoctorSpeciality", b =>
+            modelBuilder.Entity("MedicalConnected.Models.Hospital", b =>
                 {
-                    b.Property<int>("SpecialityId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.HasKey("SpecialityId", "DoctorId");
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
-                    b.HasIndex("DoctorId");
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime(6)");
 
-                    b.ToTable("DoctorSpecialities");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Website")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Hospitals");
                 });
 
             modelBuilder.Entity("MedicalConnected.Models.Patient", b =>
@@ -140,7 +169,7 @@ namespace MedicalConnected.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Create_at")
+                    b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
@@ -151,7 +180,7 @@ namespace MedicalConnected.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("Update_at")
+                    b.Property<DateTime>("UpdateAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
@@ -159,33 +188,18 @@ namespace MedicalConnected.Migrations
                     b.ToTable("Specialties");
                 });
 
-            modelBuilder.Entity("MedicalConnected.Models.DoctorSpeciality", b =>
+            modelBuilder.Entity("MedicalConnected.Models.Doctor", b =>
                 {
-                    b.HasOne("MedicalConnected.Models.Doctor", "Doctor")
-                        .WithMany("DoctorSpecialities")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MedicalConnected.Models.Specialty", "Specialty")
-                        .WithMany("DoctorSpecialities")
-                        .HasForeignKey("SpecialityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
+                        .WithMany("Doctors")
+                        .HasForeignKey("SpecialtyId");
 
                     b.Navigation("Specialty");
                 });
 
-            modelBuilder.Entity("MedicalConnected.Models.Doctor", b =>
-                {
-                    b.Navigation("DoctorSpecialities");
-                });
-
             modelBuilder.Entity("MedicalConnected.Models.Specialty", b =>
                 {
-                    b.Navigation("DoctorSpecialities");
+                    b.Navigation("Doctors");
                 });
 #pragma warning restore 612, 618
         }

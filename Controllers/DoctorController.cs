@@ -17,23 +17,50 @@ namespace MedicalConnected.Controllers
 
         // Endpoint para crear un doctor
         [HttpPost]
-        public async Task<IActionResult> CreateDoctor([FromBody] Doctor doctor)
+        public async Task<IActionResult> CreateDoctor([FromBody] Doctor doctor, [FromQuery] int? specialtyId)
         {
             if (doctor is null)
             {
                 return BadRequest("El objeto doctor es nulo.");
             }
 
-            var createdDoctor = await createDoctorService.CreateDoctorAsync(doctor);
-            // Devuelve 201 Created con la ruta para obtener el doctor creado
-            return CreatedAtAction(nameof(GetDoctor), new { doctorId = createdDoctor.Id }, createdDoctor);
+            // Deshabilita la validación automática
+            ModelState.Clear();
+
+            try
+            {
+                // Llama al servicio para crear el doctor y asignar la especialidad
+                var createdDoctor = await createDoctorService.CreateDoctorAsync(doctor, specialtyId);
+
+                // Devuelve 201 Created con la ruta para obtener el doctor creado
+                return CreatedAtAction(nameof(GetDoctor), new { doctorId = createdDoctor.Id }, createdDoctor);
+            }
+            catch (ArgumentException ex)
+            {
+                // Maneja el caso en que la especialidad no exista
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // Maneja otros errores
+                return StatusCode(500, "Ocurrió un error interno al crear el doctor.");
+            }
         }
-        
-        
-        [HttpGet]
-        public async Task<IEnumerable<Doctor>> GetDoctors()
+
+        [HttpGet("with-specialty")]
+        public async Task<IActionResult> GetDoctorsWithSpecialties()
         {
-            return await createDoctorService.GetDoctorsAsync();
+            var getDoctorsWithSpecialties = await createDoctorService.GetDoctorsAsync();
+            return Ok(getDoctorsWithSpecialties);
+        }
+
+
+        // Endpoint para obtener todos los doctores
+        [HttpGet]
+        public async Task<IActionResult> GetDoctors()
+        {
+            var doctors = await createDoctorService.GetDoctorsAsync();
+            return Ok(doctors);
         }
 
         // Endpoint para obtener un doctor por ID

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using MedicalConnected.DbContext;
 using MedicalConnected.Services;
@@ -12,11 +13,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<MedicalDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-builder.Services.AddScoped<DoctorSpecialtyService>();
 builder.Services.AddScoped<CreateDoctorService>();
 builder.Services.AddScoped<SpecialtySercive>();
+builder.Services.AddScoped<HospitalService>();
 
 builder.Services.AddControllers();
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
